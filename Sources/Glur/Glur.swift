@@ -7,6 +7,29 @@
 
 import SwiftUI
 
+public struct Glur {
+   let radius: CGFloat
+   let offset: CGFloat
+   let interpolation: CGFloat
+   let direction: BlurDirection
+   
+   public init(
+       radius: CGFloat = 8.0,
+       offset: CGFloat = 0.3,
+       interpolation: CGFloat = 0.4,
+       direction: BlurDirection = .down
+   ) {
+       assert(radius >= 0.0, "Radius must be greater than or equal to 0")
+       assert(offset >= 0.0 && offset <= 1.0, "Offset must be between 0 and 1")
+       assert(interpolation >= 0.0 && interpolation <= 1.0, "Interpolation must be between 0 and 1")
+       
+       self.radius = radius
+       self.offset = offset
+       self.interpolation = interpolation
+       self.direction = direction
+   }
+}
+
 extension View {
     /// A modifier that applies a gradient blur effect to the view.
     ///
@@ -34,5 +57,16 @@ extension View {
                                                   interpolation: interpolation,
                                                   direction: direction))
         }
+    }
+
+    /// A modifier that applies a gradient blur effect to the view.
+    ///
+    /// - Parameters:
+    ///   - config: A `Glur` configuration object containing radius, offset, interpolation, and direction settings.
+    public func glur(_ config: Glur) -> some View {
+        return glur(radius: config.radius,
+                    offset: config.offset,
+                    interpolation: config.interpolation,
+                    direction: config.direction)
     }
 }
